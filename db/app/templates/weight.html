@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}权值分配 - 优良学风班集体辅助评选系统{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h2 align="center">当前权重分配</h2><br />
+    <table width="800" align="center">
+        <tr>
+            <td align="center"><h3>客观成绩</h3></td>
+            <td align="center"><h3>答辩成绩</h3></td>
+            <td align="center"><h3>附加分</h3></td>
+        </tr>
+        <tr>
+            <td align="center"><h4>{{ wb }}</h4></td>
+            <td align="center"><h4>{{ wd }}</h4></td>
+            <td align="center"><h4>0.1</h4></td>
+        </tr>
+    </table>
+    <br /><br />
+</div>
+<div class="page-content">
+    <h3 align="center">如需修改权重分配方案，请填写以下表单</h3><br />
+    <h4 align="center">权重可以是0-1之间的任意小数值，且总和无需为1</h4><br />
+    <div class="col-md-10 col-md-offset-1 input-lg">
+        {{ wtf.quick_form(form, form_type='horizontal') }}
+        <br /><br /><br /><br />
+    </div>
+</div>
+{% endblock %}
+
+
+

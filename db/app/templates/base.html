@@ -1,0 +1,111 @@
+<!--包含导航条的程序基模板 -->
+
+<!-- 继承自bootstrap的bast.html -->
+{% extends "bootstrap/base.html" %}
+
+<!-- 标题块 -->
+{% block title %} 优良学风班集体辅助评选系统 - 中国农业大学 {% endblock %}
+
+<!-- 头文件块 -->
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static',filename='favicon.ico') }}"
+    type="image/x-icon">
+<link rel="icon" href="{{ url_for('static',filename='favicon.ico') }}"
+    type="image/x-icon">
+{% endblock %}
+
+<!-- 导航块 -->
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle"
+                data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">优良学风班</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <!-- 导航条中的“主页”链接 -->
+            <ul class="nav navbar-nav">
+                <li><a href="/">主页</a></li>
+                <!-- 当用户登录后，显示其他的可操作选项 -->
+                {% if current_user.is_authenticated %}
+                    <!-- 当身份为评选负责人时，可以进行：评选项目修改，评选内容评分，结果公布 -->
+                    {% if current_user.role==1 %}
+                        <li><a href="{{ url_for('main.weight',username=current_user.username) }}">
+                        项目权重设置</a></li>
+                        <!-- 如果传入了ce_info(其中存储需要显示的评选项目编号、名称)，则显示下拉菜单 -->
+                        {% if ce_info %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                评选内容评分<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                            {% for each in ce_info %}
+                                <li><a href="{{ url_for('main.evaluate', eno=each.Eno) }}">{{ each.Ename }}</a></li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li><a href="{{ url_for('main.index',username=current_user.username) }}">
+                        评选内容评分</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('main.publish',username=current_user.username) }}">
+                        结果公布</a></li>
+                        <li><a href="{{ url_for('main.search', username=current_user.username) }}">往届评选结果
+                        </a></li>
+                    <!-- 当身份为班级负责人时，可以进行：班干部名单提交，附加分申请，结果查询 -->
+                    {% else %}
+                        <li><a href="{{ url_for('main.cadre',username=current_user.username) }}">
+                        班干部名单提交</a></li>
+                        <li><a href="{{ url_for('main.select',username=current_user.username) }}">
+                        结果查询</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+            <!-- 导航条中的“登录/登出”链接 -->
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        {% if current_user.role==1 %}
+                        评选负责人：{{ current_user.username }}
+                        {% else %}
+                        {{ current_user.Class }}：{{ current_user.username }}
+                        {% endif %}<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('main.logout') }}">退出登陆</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- 内容块 -->
+{% block content %}
+<div class="container">
+    <!-- 渲染flash消息 -->
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+<!-- 脚本块 -->
+{% block scripts %}
+{{ super() }}
+    <!-- 引入moment.js库 -->
+{{ moment.include_moment() }}
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}评选结果公布 - 优良学风班集体辅助评选系统{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h2 align="center">{{ current_year }}年优良学风班评选结果</h2><br />
+</div>
+{% if published.IsPB == 0 %}
+<div class="page-content col-md-3 col-md-offset-2">
+        <h4>{{ wtf.quick_form(form, form_type='basic') }}</h4>
+</div>
+<div class="page-content">
+    <br />
+    <h4 align="center">当前成绩计算方案：</h4>
+    <h4 align="center">客观成绩×{{ wb }}+答辩成绩×{{ wd }}+附加分×0.1</h4><br />
+</div>
+<div class="page-content">
+    <br /><br />
+    {% if classes %}
+    <table width="800" align="center">
+        <tr>
+            <td align="center"><h3>班级</h3></td>
+            <td align="center"><h3>总成绩</h3></td>
+            <td align="center"><h3>排名</h3></td>
+        </tr>
+        {% for each_class in classes %}
+            <tr>
+                <td align="center"><h4>{{ each_class.Class }}</h4></td>
+                <td align="center"><h4>{{ each_class.Score }}</h4></td>
+                <td align="center"><h4>{{ each_class.Rank }}</h4></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br /><br />
+    <div align="center">
+    {{ wtf.quick_form(publishForm) }}
+    </div>
+    {% endif %}
+</div>
+{% else %}
+    <div class="page-content">
+        <h3 align="center">结果已经发布！</h3>
+        <br />
+        <br />
+        <table align="center" width="600">
+            <tr>
+                <td align="center"><h3>班级</h3></td>
+                <td align="center"><h3>最终成绩</h3></td>
+                <td align="center"><h3>排名</h3></td>
+            </tr>
+            {% if classes %}
+            {% for each_class in classes %}
+                {% if each_class.Rank %}
+                <tr>
+                    <td align="center"><h4>{{ each_class.Class }}</h4></td>
+                    <td align="center"><h4>{{ each_class.Score }}</h4></td>
+                    <td align="center"><h4>{{ each_class.Rank }}</h4></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+{% endif %}
+{% endblock %}
+
+
+

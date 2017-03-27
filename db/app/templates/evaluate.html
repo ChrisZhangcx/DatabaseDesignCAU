@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}项目评估 - 优良学风班集体辅助评选系统{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+
+</div>
+<div class="page-content">
+    <h2 align="center">当前评估项：{{ ename }}</h2>
+    <h3 align="center">项目描述（一般为该项评分的完整性要求）：{{ edesc }}</h3>
+    <br /><br />
+    <form action="{{ url_for('main.evaluate', eno=eno) }}" method="POST">
+    <table width="400" align="center">
+        <tr>
+            <td align="center"><h3>班级</h3></td>
+            <td align="center"><h3>成绩</h3></td>
+        </tr>
+        {% for each_class in class_info %}
+            <!-- 只有当评选班级符合年级条件时，才能对其评分 -->
+            {% if current_year-each_class.Grade >=1 and current_year-each_class.Grade<=3 %}
+            <tr>
+                <td align="center"><h4>{{ each_class.Class }}</h4></td>
+                <td align="center"><h4><input type="number"
+                                              name="{{ each_class.Class }}"></h4></td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <br /><br /><hr />
+    <div align="center">
+        <h4><input align="center" type="submit" name="submit" value="提交评估结果"></h4>
+    </div>
+    </form>
+</div>
+{% endblock %}
+
+
+

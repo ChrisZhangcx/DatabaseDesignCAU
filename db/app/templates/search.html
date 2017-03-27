@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}往届评选结果查看 - 优良学风班集体辅助评选系统{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    {{ wtf.quick_form(form) }}
+</div>
+<div class="page-content">
+    {% if result %}
+    <table width="600" align="center">
+        <tr>
+            <td align="center"><h3>班级</h3></td>
+            <td align="center"><h3>最终成绩</h3></td>
+            <td align="center"><h3>排名</h3></td>
+        </tr>
+        {% for each_result in result %}
+            <tr>
+                <td align="center"><h4>{{ each_result.Class }}</h4></td>
+                <td align="center"><h4>{{ each_result.Score }}</h4></td>
+                <td align="center"><h4>{{ each_result.Rank }}</h4></td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+

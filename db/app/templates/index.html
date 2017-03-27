@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}优良学风班集体辅助评选系统 - 中国农业大学{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h2 align="center">欢迎使用优良学风班集体评选辅助决策系统</h2>
+    {% if current_user.is_authenticated %}
+        <h3 align="center">{{ current_user.username }}</h3><br/><br/><br/>
+        <h3 align="center">
+            您的身份是：
+            {% if current_user.role == 1 %}
+                评选负责人
+            {% else %}
+                {{ current_user.Class }} 班级负责人
+            {% endif %}
+        </h3>
+        <h3 align="center">请在上方导航栏选择您要进行的操作。</h3>
+    {% else %}
+        <br/>
+        <h3 align="center">请输入您的帐号和密码</h3>
+    {% endif %}
+</div>
+<br />
+{% if not current_user.is_authenticated %}
+    <div class="col-md-5 col-md-offset-3 input-lg">
+        {{ wtf.quick_form(form, form_type='horizontal') }}
+    </div>
+{% endif %}
+{% endblock %}

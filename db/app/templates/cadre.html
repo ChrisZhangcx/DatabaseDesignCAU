@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}班干部名单提交 - 优良学风班集体辅助评选系统{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h2 align="center">班级成员名单</h2><br />
+    <h4 align="center">请在下面给出的班级成员信息中，选择班干部的信息。</h4>
+    <h4 align="center">请在评选时间内完成操作，否则将导致班干部信息失效，影响最终评定结果。</h4>
+</div>
+<div class="page-content">
+    <br />
+    <!-- h3 align="center">学号&nbsp;&nbsp;&nbsp;姓名&nbsp;&nbsp;&nbsp;是否为班干部</h3-->
+    <table width="800" border="1" align="center">
+        <tr>
+            <td align="center"><h3>&nbsp;&nbsp;班级&nbsp;&nbsp;</h3></td>
+            <td align="center"><h3>&nbsp;&nbsp;姓名&nbsp;&nbsp;</h3></td>
+            <td align="center"><h3>&nbsp;&nbsp;学号&nbsp;&nbsp;</h3></td>
+            <td align="center"><h3>&nbsp;&nbsp;班干部&nbsp;&nbsp;</h3></td>
+        </tr>
+    {% for info in infos %}
+        <tr>
+            <td align="center"><h4>{{ info.Class }}</h4></td>
+            <td align="center"><h4>{{ info.Sname }}</h4></td>
+            <td align="center"><h4>{{ info.Sno }}</h4></td>
+            <td align="center"><h4>
+                {% if info.IsCC %}
+                <a href="{{ url_for('.cancel_cadre', sno=info.Sno) }}">是</a>
+                {% else %}
+                <a href="{{ url_for('.define_cadre', sno=info.Sno) }}">否</a>
+                {% endif %}</h4>
+        </tr>
+    {% endfor %}
+    </table>
+    <br /><br /><br />
+    <br /><br /><br />
+</div>
+{% endblock %}
+
+
+
